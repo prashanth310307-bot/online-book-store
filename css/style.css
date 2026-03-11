@@ -1,1 +1,49 @@
+body{
+margin:0;
+font-family: 'Source Sans Pro', Arial;
+background:#16213e;
+color:white;
+}
 
+.font-heading{
+font-family:'Playfair Display', serif;
+}
+
+.hidden{
+display:none;
+}
+
+button{
+padding:10px 16px;
+border:none;
+background:#e94560;
+color:white;
+cursor:pointer;
+border-radius:6px;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+#books-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.book-card{
+background:#1a1a2e;
+padding:20px;
+border-radius:10px;
+text-align:center;
+}
+
+.book-card h3{
+margin:10px 0;
+}
+
+.book-card button{
+margin-top:10px;
+}
