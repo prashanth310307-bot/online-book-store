@@ -1,301 +1,88 @@
 <!doctype html>
-<html lang="en" class="h-full">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Book Store</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="/_sdk/data_sdk.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Source+Sans+Pro:wght@400;600&amp;display=swap" rel="stylesheet">
-  <style>
-    .font-heading { font-family: 'Playfair Display', Georgia, serif; }
-    .font-body { font-family: 'Source Sans Pro', Arial, sans-serif; }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    
-    .animate-fade-in {
-      animation: fadeIn 0.5s ease-out forwards;
-    }
-    
-    .animate-slide-in {
-      animation: slideIn 0.4s ease-out forwards;
-    }
-    
-    .book-card {
-      transition: all 0.3s ease;
-    }
-    
-    .book-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    }
-    
-    .btn-primary {
-      transition: all 0.2s ease;
-    }
-    
-    .btn-primary:hover {
-      transform: scale(1.02);
-    }
-    
-    .input-field:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
-    }
-    
-    .toast {
-      animation: slideIn 0.3s ease-out;
-    }
-  </style>
-  <style>body { box-sizing: border-box; }</style>
- </head>
- <body class="h-full font-body">
-  <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
-   <!-- Toast Container -->
-   <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div><!-- Login Screen -->
-   <div id="login-screen" class="min-h-full flex items-center justify-center p-6">
-    <div class="w-full max-w-md animate-fade-in">
-     <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-4" style="background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);">
-       <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-       </svg>
-      </div>
-      <h1 id="store-title" class="font-heading text-4xl font-bold text-white mb-2">PageTurner Books</h1>
-      <p id="welcome-text" class="text-gray-300">Discover your next favorite read</p>
-     </div>
-     <div class="rounded-2xl p-8 shadow-2xl" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
-      <div class="flex mb-6 rounded-lg overflow-hidden" style="background: rgba(255,255,255,0.1);">
-       <button id="login-tab" onclick="switchAuthTab('login')" class="flex-1 py-3 text-white font-semibold transition-all" style="background: #e94560;">Login</button> <button id="register-tab" onclick="switchAuthTab('register')" class="flex-1 py-3 text-gray-300 font-semibold transition-all">Register</button>
-      </div><!-- Login Form -->
-      <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
-       <div>
-        <label class="block text-gray-300 text-sm mb-2">Mobile Number</label> <input type="tel" id="login-mobile" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" required class="input-field w-full px-4 py-3 rounded-lg border-0 text-white placeholder-gray-400" style="background: rgba(255,255,255,0.1);">
-       </div><button type="submit" id="login-btn" class="btn-primary w-full py-3 rounded-lg text-white font-semibold" style="background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);"> Login </button>
-      </form><!-- Register Form -->
-      <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4 hidden">
-       <div>
-        <label class="block text-gray-300 text-sm mb-2">Username</label> <input type="text" id="register-username" placeholder="Choose a username" minlength="3" required class="input-field w-full px-4 py-3 rounded-lg border-0 text-white placeholder-gray-400" style="background: rgba(255,255,255,0.1);">
-       </div>
-       <div>
-        <label class="block text-gray-300 text-sm mb-2">Mobile Number</label> <input type="tel" id="register-mobile" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" required class="input-field w-full px-4 py-3 rounded-lg border-0 text-white placeholder-gray-400" style="background: rgba(255,255,255,0.1);">
-       </div><button type="submit" id="register-btn" class="btn-primary w-full py-3 rounded-lg text-white font-semibold" style="background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);"> Create Account </button>
-      </form>
-     </div>
-    </div>
-   </div><!-- Main Store Screen -->
-   <div id="store-screen" class="hidden min-h-full">
-    <!-- Header -->
-    <header class="sticky top-0 z-40 px-6 py-4" style="background: rgba(26, 26, 46, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1);">
-     <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-3">
-       <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);">
-        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-        </svg>
-       </div>
-       <h1 id="header-store-name" class="font-heading text-xl font-bold text-white">PageTurner Books</h1>
-      </div>
-      <div class="flex items-center gap-4">
-       <button onclick="showCart()" class="relative p-2 rounded-lg text-white transition-all hover:bg-white/10">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-        </svg><span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 rounded-full text-xs flex items-center justify-center text-white font-bold hidden" style="background: #e94560;">0</span> </button>
-       <div class="flex items-center gap-3 pl-4" style="border-left: 1px solid rgba(255,255,255,0.2);">
-        <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-semibold" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-         <span id="user-initial">U</span>
-        </div><span id="user-display-name" class="text-white text-sm hidden sm:block">User</span> <button onclick="handleLogout()" class="text-gray-400 hover:text-white transition-colors text-sm">Logout</button>
-       </div>
-      </div>
-     </div>
-    </header><!-- Category Filter -->
-    <div class="px-6 py-4 overflow-x-auto" style="background: rgba(255,255,255,0.02);">
-     <div class="max-w-7xl mx-auto flex gap-3">
-      <button onclick="filterBooks('all')" class="category-btn px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all text-white" style="background: #e94560;" data-category="all">All Books</button> <button onclick="filterBooks('fiction')" class="category-btn px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all text-gray-300 hover:bg-white/10" data-category="fiction">Fiction</button> <button onclick="filterBooks('non-fiction')" class="category-btn px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all text-gray-300 hover:bg-white/10" data-category="non-fiction">Non-Fiction</button> <button onclick="filterBooks('mystery')" class="category-btn px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all text-gray-300 hover:bg-white/10" data-category="mystery">Mystery</button> <button onclick="filterBooks('romance')" class="category-btn px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all text-gray-300 hover:bg-white/10" data-category="romance">Romance</button> <button onclick="filterBooks('sci-fi')" class="category-btn px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all text-gray-300 hover:bg-white/10" data-category="sci-fi">Sci-Fi</button> <button onclick="filterBooks('nature')" class="category-btn px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all text-gray-300 hover:bg-white/10" data-category="nature">Nature</button> <button onclick="filterBooks('movie')" class="category-btn px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all text-gray-300 hover:bg-white/10" data-category="movie">Movie</button> <button onclick="filterBooks('history')" class="category-btn px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all text-gray-300 hover:bg-white/10" data-category="history">History</button>
-     </div>
-    </div><!-- Books Grid -->
-    <main class="px-6 py-8">
-     <div class="max-w-7xl mx-auto">
-      <h2 class="font-heading text-2xl font-bold text-white mb-6">Featured Books</h2>
-      <div id="books-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-       <!-- Books will be rendered here -->
-      </div>
-     </div>
-    </main>
-   </div><!-- Cart Modal -->
-   <div id="cart-modal" class="fixed inset-0 z-50 hidden">
-    <div class="absolute inset-0 bg-black/60" onclick="hideCart()"></div>
-    <div class="absolute right-0 top-0 h-full w-full max-w-md animate-slide-in" style="background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);">
-     <div class="h-full flex flex-col">
-      <div class="flex items-center justify-between p-6" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-       <h2 class="font-heading text-2xl font-bold text-white">Your Cart</h2><button onclick="hideCart()" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-all">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg></button>
-      </div>
-      <div id="cart-items" class="flex-1 overflow-auto p-6 space-y-4">
-       <!-- Cart items will be rendered here -->
-      </div>
-      <div class="p-6" style="border-top: 1px solid rgba(255,255,255,0.1);">
-       <div class="flex items-center justify-between mb-4">
-        <span class="text-gray-300">Total</span> <span id="cart-total" class="text-2xl font-bold text-white">$0.00</span>
-       </div><button onclick="handleCheckout()" id="checkout-btn" class="btn-primary w-full py-4 rounded-lg text-white font-semibold text-lg" style="background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);"> Proceed to Checkout </button>
-      </div>
-     </div>
-    </div>
-   </div><!-- Checkout Success Modal -->
-   <div id="success-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-6" style="background: rgba(0,0,0,0.7);">
-    <div class="w-full max-w-sm rounded-2xl p-8 text-center animate-fade-in" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid rgba(255,255,255,0.1);">
-     <div class="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%);">
-      <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-      </svg>
-     </div>
-     <h3 class="font-heading text-2xl font-bold text-white mb-2">Order Placed!</h3>
-     <p class="text-gray-300 mb-6">Thank you for your purchase. Your books will be delivered soon.</p><button onclick="closeSuccessModal()" class="btn-primary px-8 py-3 rounded-lg text-white font-semibold" style="background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);"> Continue Shopping </button>
-    </div>
-   </div>
-  </div>
-  <script>
-    // Reference book data
-    const booksData = [
-      { id: 'book1', title: 'The Midnight Library', author: 'Matt Haig', price: 14.99, category: 'fiction', rating: 4.5, color: '#6366f1' },
-      { id: 'book2', title: 'Atomic Habits', author: 'James Clear', price: 16.99, category: 'non-fiction', rating: 4.8, color: '#ec4899' },
-      { id: 'book3', title: 'The Silent Patient', author: 'Alex Michaelides', price: 13.99, category: 'mystery', rating: 4.3, color: '#8b5cf6' },
-      { id: 'book4', title: 'Beach Read', author: 'Emily Henry', price: 12.99, category: 'romance', rating: 4.2, color: '#f43f5e' },
-      { id: 'book5', title: 'Project Hail Mary', author: 'Andy Weir', price: 18.99, category: 'sci-fi', rating: 4.7, color: '#14b8a6' },
-      { id: 'book6', title: 'Where the Crawdads Sing', author: 'Delia Owens', price: 15.99, category: 'fiction', rating: 4.6, color: '#f97316' },
-      { id: 'book7', title: 'Thinking Fast and Slow', author: 'Daniel Kahneman', price: 17.99, category: 'non-fiction', rating: 4.4, color: '#0ea5e9' },
-      { id: 'book8', title: 'Gone Girl', author: 'Gillian Flynn', price: 14.49, category: 'mystery', rating: 4.1, color: '#a855f7' },
-      { id: 'book9', title: 'The Hidden Life of Deer', author: 'Elizabeth Marshall Thomas', price: 15.99, category: 'nature', rating: 4.6, color: '#22c55e' },
-      { id: 'book10', title: 'Braiding Sweetgrass', author: 'Robin Wall Kimmerer', price: 17.99, category: 'nature', rating: 4.7, color: '#16a34a' },
-      { id: 'book11', title: 'The Wilder Life', author: 'Cheryl Strayed', price: 14.99, category: 'nature', rating: 4.4, color: '#65a30d' },
-      { id: 'book12', title: 'Into the Wild', author: 'Jon Krakauer', price: 16.49, category: 'nature', rating: 4.5, color: '#84cc16' },
-      { id: 'book13', title: '1917', author: 'Sam Mendes (Film Tie-in)', price: 13.99, category: 'movie', rating: 4.8, color: '#f59e0b' },
-      { id: 'book14', title: 'Dune', author: 'Frank Herbert (Film Tie-in)', price: 18.99, category: 'movie', rating: 4.7, color: '#d97706' },
-      { id: 'book15', title: 'Oppenheimer', author: 'Christopher Nolan (Film Tie-in)', price: 16.99, category: 'movie', rating: 4.9, color: '#b45309' },
-      { id: 'book16', title: 'Killers of the Flower Moon', author: 'David Grann (Film Tie-in)', price: 17.49, category: 'movie', rating: 4.6, color: '#ea580c' },
-      { id: 'book17', title: 'The Code Breaker', author: 'Walter Isaacson', price: 18.99, category: 'history', rating: 4.8, color: '#7c3aed' },
-      { id: 'book18', title: 'Sapiens', author: 'Yuval Noah Harari', price: 19.99, category: 'history', rating: 4.7, color: '#6d28d9' },
-      { id: 'book19', title: '1984', author: 'George Orwell (Historical)', price: 13.99, category: 'history', rating: 4.9, color: '#5b21b6' },
-      { id: 'book20', title: 'The Splendid Century', author: 'W.H. Lewis', price: 17.49, category: 'history', rating: 4.5, color: '#7e22ce' }
-    ];
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    // App state
-    let currentUser = null;
-    let cart = [];
-    let allUsers = [];
-    let currentFilter = 'all';
+<title>Online Book Store</title>
 
-    // Default config
-    const defaultConfig = {
-      store_name: 'PageTurner Books',
-      welcome_message: 'Discover your next favorite read',
-      primary_color: '#e94560',
-      secondary_color: '#1a1a2e',
-      text_color: '#ffffff',
-      accent_color: '#ff6b6b',
-      surface_color: '#16213e'
-    };
+<link rel="stylesheet" href="style.css">
 
-    let config = { ...defaultConfig };
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
 
-    // Initialize Element SDK
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange: async (newConfig) => {
-          config = { ...defaultConfig, ...newConfig };
-          applyConfig();
-        },
-        mapToCapabilities: (cfg) => ({
-          recolorables: [
-            {
-              get: () => cfg.secondary_color || defaultConfig.secondary_color,
-              set: (v) => { cfg.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); }
-            },
-            {
-              get: () => cfg.surface_color || defaultConfig.surface_color,
-              set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
-            },
-            {
-              get: () => cfg.text_color || defaultConfig.text_color,
-              set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
-            },
-            {
-              get: () => cfg.primary_color || defaultConfig.primary_color,
-              set: (v) => { cfg.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); }
-            },
-            {
-              get: () => cfg.accent_color || defaultConfig.accent_color,
-              set: (v) => { cfg.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }
-            }
-          ],
-          borderables: [],
-          fontEditable: undefined,
-          fontSizeable: undefined
-        }),
-        mapToEditPanelValues: (cfg) => new Map([
-          ['store_name', cfg.store_name || defaultConfig.store_name],
-          ['welcome_message', cfg.welcome_message || defaultConfig.welcome_message]
-        ])
-      });
-    }
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
 
-    // Apply config to UI
-    function applyConfig() {
-      const storeName = config.store_name || defaultConfig.store_name;
-      const welcomeMsg = config.welcome_message || defaultConfig.welcome_message;
-      const primaryColor = config.primary_color || defaultConfig.primary_color;
-      const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
-      const textColor = config.text_color || defaultConfig.text_color;
-      const accentColor = config.accent_color || defaultConfig.accent_color;
-      const surfaceColor = config.surface_color || defaultConfig.surface_color;
+</head>
 
-      document.getElementById('store-title').textContent = storeName;
-      document.getElementById('header-store-name').textContent = storeName;
-      document.getElementById('welcome-text').textContent = welcomeMsg;
+<body class="h-full font-body">
 
-      // Apply colors
-      document.getElementById('app').style.background = `linear-gradient(135deg, ${secondaryColor} 0%, ${surfaceColor} 50%, #0f3460 100%)`;
-      
-      // Update buttons with primary color
-      document.querySelectorAll('.btn-primary').forEach(btn => {
-        btn.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${accentColor} 100%)`;
-      });
+<div id="app">
 
-      // Update active category button
-      document.querySelectorAll('.category-btn').forEach(btn => {
-        if (btn.dataset.category === currentFilter) {
-          btn.style.background = primaryColor;
-          btn.style.color = textColor;
-        }
-      });
+<!-- LOGIN SCREEN -->
 
-      // Update cart badge
-      const badge = document.getElementById('cart-badge');
-      if (badge) badge.style.background = primaryColor;
-    }
+<div id="login-screen">
 
-    // Initialize Data SDK
-    const dataHandler = {
-      onDataChanged(data) {
-        allUsers = data.filter(d => d.type === 'user');
-        
-        // Update current user's cart if logged in
-        if (currentUser) {
-          const userData = allUsers.find(u => u.mobile === currentUser.mobile);
-          if (userData && userData.cart) {
-            try {
-              cart = JSON.parse(userData.cart);
-              updateCartUI();
-            ee code use chesindhi
+<h1 id="store-title">PageTurner Books</h1>
+<p id="welcome-text">Discover your next favorite read</p>
+
+<button onclick="showStore()">Login</button>
+
+</div>
+
+
+<!-- STORE SCREEN -->
+
+<div id="store-screen" class="hidden">
+
+<header>
+
+<h1 id="header-store-name">PageTurner Books</h1>
+
+<button onclick="showCart()">Cart</button>
+
+</header>
+
+
+<!-- CATEGORY -->
+
+<div>
+
+<button onclick="filterBooks('all')">All</button>
+<button onclick="filterBooks('fiction')">Fiction</button>
+<button onclick="filterBooks('non-fiction')">Non Fiction</button>
+<button onclick="filterBooks('mystery')">Mystery</button>
+<button onclick="filterBooks('romance')">Romance</button>
+
+</div>
+
+
+<!-- BOOKS -->
+
+<div id="books-grid"></div>
+
+</div>
+
+
+<!-- CART MODAL -->
+
+<div id="cart-modal" class="hidden">
+
+<h2>Your Cart</h2>
+
+<div id="cart-items"></div>
+
+<p>Total: <span id="cart-total">$0</span></p>
+
+<button onclick="checkout()">Checkout</button>
+
+<button onclick="hideCart()">Close</button>
+
+</div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
