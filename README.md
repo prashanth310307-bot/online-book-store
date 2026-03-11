@@ -19,5 +19,10 @@ This is a simple Online Book Store web application.
 1. Download the project
 2. Open index.html in your browser
 
+
+## Project Screenshot
+
+![Online Book Store](image.png)
+
 ## Author
 Prashanth
