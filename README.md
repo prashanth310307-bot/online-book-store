@@ -22,7 +22,7 @@ This is a simple Online Book Store web application.
 
 ## Project Screenshot
 
-![Online Book Store](image.png)
+![Online Book Store](images/screenshot.png)
 
 ## Author
 Prashanth
